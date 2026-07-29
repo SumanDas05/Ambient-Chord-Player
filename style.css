@@ -1,0 +1,7 @@
+body {
+  font-family: Arial, sans-serif; /* Sets a clean, readable font */
+  background-color: #1a1a2e;      /* Dark navy background */
+  color: white;                    /* Text color, so it's visible on dark bg */
+  text-align: center;              /* Centers our test text */
+  padding: 50px;                   /* Space around the edges of the content */
+}
