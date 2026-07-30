@@ -1,7 +1,57 @@
+/* ===================================================
+   Base page styling
+   =================================================== */
+
 body {
-  font-family: Arial, sans-serif; /* Sets a clean, readable font */
-  background-color: #1a1a2e;      /* Dark navy background */
-  color: white;                    /* Text color, so it's visible on dark bg */
-  text-align: center;              /* Centers our test text */
-  padding: 50px;                   /* Space around the edges of the content */
+  font-family: Arial, sans-serif;
+  background-color: #1a1a2e;
+  color: white;
+  text-align: center;
+  padding: 50px;
+}
+
+/* ===================================================
+   Chord button container
+   =================================================== */
+
+#chord-buttons {
+  display: flex;        /* lays out buttons in a row instead of stacked */
+  flex-wrap: wrap;       /* lets buttons drop to a new line on small screens */
+  justify-content: center;
+  gap: 15px;              /* even spacing between buttons */
+  margin-top: 30px;
+}
+
+/* ===================================================
+   Chord button base style (default / not playing)
+   =================================================== */
+
+.chord-btn {
+  padding: 20px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;         /* shows a "hand" cursor on hover, signaling it's clickable */
+  transition: all 0.3s ease; /* smoothly animates any style changes (like becoming active) */
+}
+
+/* A subtle hover effect, so the button reacts even before clicking */
+.chord-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05); /* slightly enlarges the button on hover */
+}
+
+/* ===================================================
+   Active (currently playing) chord button
+   =================================================== */
+
+.chord-btn.active {
+  background-color: black;
+  border-color: white;
+  color: white;
+  transform: scale(1.08);           /* slightly bigger, to stand out */
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); /* soft glow around it */
 }
