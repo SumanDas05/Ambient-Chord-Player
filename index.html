@@ -20,6 +20,14 @@
   <!-- Each button carries its own "data" using data-* attributes.
        This means we don't have to hardcode chord info separately in JS —
        JavaScript can just READ this info directly off the button itself. -->
+
+       <h2>Choose an Instrument</h2>
+<div id="instrument-buttons">
+  <button class="instrument-btn active" data-instrument="pad">Soft Pad</button>
+  <button class="instrument-btn" data-instrument="piano">Warm Piano</button>
+  <button class="instrument-btn" data-instrument="pluck">Pluck</button>
+  <button class="instrument-btn" data-instrument="strings">Strings</button>
+</div>
   <div id="chord-buttons">
     <button class="chord-btn" data-notes="C4,E4,G4" data-key="c">C</button>
     <button class="chord-btn" data-notes="A3,C4,E4" data-key="a">Am</button>
