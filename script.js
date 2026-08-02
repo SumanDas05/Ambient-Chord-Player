@@ -158,3 +158,41 @@ window.addEventListener("keyup", (event) => {
   const key = event.key.toLowerCase();
   keysPhysicallyDown.delete(key);
 });
+// ---------------------------------------------------
+// 5. Stop All button
+// ---------------------------------------------------
+
+const stopAllButton = document.getElementById("stop-all-btn");
+
+stopAllButton.addEventListener("click", () => {
+  // If a chord is currently playing, stop just that one properly
+  // (updates its "active" styling and clears our tracking variable)
+  if (currentlyPlayingButton !== null) {
+    stopChord(currentlyPlayingButton);
+    currentlyPlayingButton = null;
+  }
+
+  // releaseAll() is a safety net built into Tone.PolySynth — it immediately
+  // silences EVERY note currently sounding, even ones we might have lost
+  // track of due to an edge case (e.g., a missed keyup event). Good for a 
+  // reliable "panic button."
+  synth.releaseAll();
+
+  console.log("All sounds stopped.");
+});
+
+// ---------------------------------------------------
+// 6. Volume slider
+// ---------------------------------------------------
+
+const volumeSlider = document.getElementById("volume-slider");
+
+// "input" fires continuously WHILE the user drags the slider (not just 
+// when they let go), so the volume updates live and feels responsive.
+volumeSlider.addEventListener("input", () => {
+  // Slider values come in as text by default; Number() converts it 
+  // to an actual number so Tone.js can use it correctly.
+  const newVolume = Number(volumeSlider.value);
+  synth.volume.value = newVolume;
+  console.log("Volume set to: " + newVolume + " dB");
+});

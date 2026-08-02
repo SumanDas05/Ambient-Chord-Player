@@ -20,7 +20,16 @@
   <!-- Each button carries its own "data" using data-* attributes.
        This means we don't have to hardcode chord info separately in JS —
        JavaScript can just READ this info directly off the button itself. -->
+<div id="controls">
+  <button id="stop-all-btn">⏹ Stop All</button>
 
+  <div id="volume-control">
+    <label for="volume-slider">Volume</label>
+    <!-- type="range" creates a slider. min/max/value define its range and 
+         starting position. step controls how finely it can be adjusted. -->
+    <input type="range" id="volume-slider" min="-40" max="0" value="-8" step="1" />
+  </div>
+</div>
        <h2>Choose an Instrument</h2>
 <div id="instrument-buttons">
   <button class="instrument-btn active" data-instrument="pad">Soft Pad</button>
