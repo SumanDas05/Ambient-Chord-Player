@@ -4,39 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ambient Chord Player</title>
-
-  <!-- This links our CSS file so the page uses our custom styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
- <body>
-
-  <body>
-
   <h1>Ambient Chord Player</h1>
-  <p>Click a chord to play. Click again to stop.</p>
-
-  <!-- Each button carries its own "data" using data-* attributes.
-       This means we don't have to hardcode chord info separately in JS —
-       JavaScript can just READ this info directly off the button itself. -->
-<div id="controls">
-  <button id="stop-all-btn">⏹ Stop All</button>
-
-  <div id="volume-control">
-    <label for="volume-slider">Volume</label>
-    <!-- type="range" creates a slider. min/max/value define its range and 
-         starting position. step controls how finely it can be adjusted. -->
-    <input type="range" id="volume-slider" min="-40" max="0" value="-8" step="1" />
+  
+  <h2>Choose an Instrument</h2>
+  <div id="instrument-buttons">
+    <button class="instrument-btn active" data-instrument="pad">Soft Pad</button>
+    <button class="instrument-btn" data-instrument="piano">Warm Piano</button>
+    <button class="instrument-btn" data-instrument="pluck">Pluck</button>
+    <button class="instrument-btn" data-instrument="strings">Strings</button>
   </div>
-</div>
-       <h2>Choose an Instrument</h2>
-<div id="instrument-buttons">
-  <button class="instrument-btn active" data-instrument="pad">Soft Pad</button>
-  <button class="instrument-btn" data-instrument="piano">Warm Piano</button>
-  <button class="instrument-btn" data-instrument="pluck">Pluck</button>
-  <button class="instrument-btn" data-instrument="strings">Strings</button>
-</div>
+
+
+  <h2>Chords</h2>
   <div id="chord-buttons">
     <button class="chord-btn" data-notes="C4,E4,G4" data-key="c">C</button>
     <button class="chord-btn" data-notes="A3,C4,E4" data-key="a">Am</button>
@@ -45,19 +28,14 @@
     <button class="chord-btn" data-notes="D3,F3,A3" data-key="d">Dm</button>
     <button class="chord-btn" data-notes="E3,G3,B3" data-key="e">Em</button>
   </div>
+  <p class="hint">Click a chord, or use your keyboard: C A F G D E</p>
+
+  <div id="volume-control">
+    <label for="volume-slider">Volume</label>
+    <input type="range" id="volume-slider" min="-40" max="0" value="-8" step="1" />
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
   <script src="script.js"></script>
-</body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-  <script src="script.js"></script>
-</body>
-  <!-- This links our JavaScript file (behavior/logic). We put it at the 
-       bottom of <body> so the HTML loads first before JS tries to touch it -->
- <!-- This loads the Tone.js library from a CDN (a server that hosts public code libraries).
-     It must come BEFORE our own script.js, because our code uses Tone.js's features. -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-
-<script src="script.js"></script>
 </body>
 </html>

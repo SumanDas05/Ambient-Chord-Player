@@ -11,21 +11,18 @@ const synth = new Tone.PolySynth(Tone.Synth, {
   envelope: { attack: 1.5, decay: 0.3, sustain: 0.9, release: 3 }
 });
 
-synth.volume.value = -8; // slightly quieter, easier to sing over
+synth.volume.value = -8;
 
-// Low-pass filter: cuts harsh high frequencies for a warmer, rounder tone
 const filter = new Tone.Filter({
   frequency: 800,
   type: "lowpass"
 });
 
-// Reverb: adds a sense of space
 const reverb = new Tone.Reverb({
   decay: 4,
   wet: 0.4
 }).toDestination();
 
-// Signal chain: synth -> filter -> reverb -> speakers
 synth.chain(filter, reverb);
 
 // ---------------------------------------------------
@@ -51,15 +48,11 @@ const instrumentPresets = {
   }
 };
 
-// List of instrument names, in order, so we can "step through" them with Spacebar
 const instrumentNames = Object.keys(instrumentPresets);
-
-// Tracks which instrument is currently selected (by position in the list)
-let currentInstrumentIndex = 0; // starts at "pad"
+let currentInstrumentIndex = 0;
 
 const instrumentButtons = document.querySelectorAll(".instrument-btn");
 
-// Switches the synth to a given instrument preset, and updates UI + tracking
 function selectInstrument(instrumentName) {
   synth.set(instrumentPresets[instrumentName]);
 
@@ -72,7 +65,6 @@ function selectInstrument(instrumentName) {
   console.log("Instrument switched to: " + instrumentName);
 }
 
-// Moves to the next instrument in the list, wrapping back to the start at the end
 function selectNextInstrument() {
   currentInstrumentIndex = (currentInstrumentIndex + 1) % instrumentNames.length;
   selectInstrument(instrumentNames[currentInstrumentIndex]);
@@ -89,7 +81,6 @@ instrumentButtons.forEach((button) => {
 // ---------------------------------------------------
 
 const chordButtons = document.querySelectorAll(".chord-btn");
-
 let currentlyPlayingButton = null;
 
 function stopChord(button) {
@@ -136,17 +127,15 @@ const keysPhysicallyDown = new Set();
 window.addEventListener("keydown", (event) => {
   const key = event.key.toLowerCase();
 
-  if (keysPhysicallyDown.has(key)) return; // ignore repeats while held
+  if (keysPhysicallyDown.has(key)) return;
   keysPhysicallyDown.add(key);
 
-  // Spacebar -> cycle to next instrument
   if (key === " ") {
-    event.preventDefault(); // stop page from scrolling on Space
+    event.preventDefault();
     selectNextInstrument();
     return;
   }
 
-  // Otherwise, check if the key matches a chord button
   chordButtons.forEach((button) => {
     if (button.dataset.key === key) {
       toggleChord(button);
@@ -158,40 +147,14 @@ window.addEventListener("keyup", (event) => {
   const key = event.key.toLowerCase();
   keysPhysicallyDown.delete(key);
 });
-// ---------------------------------------------------
-// 5. Stop All button
-// ---------------------------------------------------
-
-const stopAllButton = document.getElementById("stop-all-btn");
-
-stopAllButton.addEventListener("click", () => {
-  // If a chord is currently playing, stop just that one properly
-  // (updates its "active" styling and clears our tracking variable)
-  if (currentlyPlayingButton !== null) {
-    stopChord(currentlyPlayingButton);
-    currentlyPlayingButton = null;
-  }
-
-  // releaseAll() is a safety net built into Tone.PolySynth — it immediately
-  // silences EVERY note currently sounding, even ones we might have lost
-  // track of due to an edge case (e.g., a missed keyup event). Good for a 
-  // reliable "panic button."
-  synth.releaseAll();
-
-  console.log("All sounds stopped.");
-});
 
 // ---------------------------------------------------
-// 6. Volume slider
+// 5. Volume slider
 // ---------------------------------------------------
 
 const volumeSlider = document.getElementById("volume-slider");
 
-// "input" fires continuously WHILE the user drags the slider (not just 
-// when they let go), so the volume updates live and feels responsive.
 volumeSlider.addEventListener("input", () => {
-  // Slider values come in as text by default; Number() converts it 
-  // to an actual number so Tone.js can use it correctly.
   const newVolume = Number(volumeSlider.value);
   synth.volume.value = newVolume;
   console.log("Volume set to: " + newVolume + " dB");
