@@ -8,34 +8,57 @@
 </head>
 <body>
 
-  <h1>Ambient Chord Player</h1>
-  
-  <h2>Choose an Instrument</h2>
-  <div id="instrument-buttons">
-    <button class="instrument-btn active" data-instrument="pad">Soft Pad</button>
-    <button class="instrument-btn" data-instrument="piano">Warm Piano</button>
-    <button class="instrument-btn" data-instrument="pluck">Pluck</button>
-    <button class="instrument-btn" data-instrument="strings">Strings</button>
+ <body>
+
+  <!-- Purely decorative floating blurred shapes behind the glass panel -->
+  <div class="background-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
   </div>
 
+  <main class="glass-panel">
 
-  <h2>Chords</h2>
-  <div id="chord-buttons">
-    <button class="chord-btn" data-notes="C4,E4,G4" data-key="c">C</button>
-    <button class="chord-btn" data-notes="A3,C4,E4" data-key="a">Am</button>
-    <button class="chord-btn" data-notes="F3,A3,C4" data-key="f">F</button>
-    <button class="chord-btn" data-notes="G3,B3,D4" data-key="g">G</button>
-    <button class="chord-btn" data-notes="D3,F3,A3" data-key="d">Dm</button>
-    <button class="chord-btn" data-notes="E3,G3,B3" data-key="e">Em</button>
-  </div>
-  <p class="hint">Click a chord, or use your keyboard: C A F G D E</p>
+    <header>
+      <h1>🎧 Ambient Chord Player</h1>
+      <p class="subtitle">Play soft, sustained chords to relax and sing along</p>
+    </header>
 
-  <div id="volume-control">
-    <label for="volume-slider">Volume</label>
-    <input type="range" id="volume-slider" min="-40" max="0" value="-8" step="1" />
-  </div>
+    <section class="section">
+      <h2>Instrument</h2>
+      <div id="instrument-buttons">
+        <button class="instrument-btn active" data-instrument="pad">Soft Pad</button>
+        <button class="instrument-btn" data-instrument="piano">Warm Piano</button>
+        <button class="instrument-btn" data-instrument="pluck">Pluck</button>
+        <button class="instrument-btn" data-instrument="strings">Strings</button>
+      </div>
+      <p class="hint">Press Spacebar to cycle instruments</p>
+    </section>
+
+    <section class="section">
+      <h2>Chords</h2>
+      <div id="chord-buttons">
+        <button class="chord-btn" data-notes="C4,E4,G4" data-key="c">C</button>
+        <button class="chord-btn" data-notes="A3,C4,E4" data-key="a">Am</button>
+        <button class="chord-btn" data-notes="F3,A3,C4" data-key="f">F</button>
+        <button class="chord-btn" data-notes="G3,B3,D4" data-key="g">G</button>
+        <button class="chord-btn" data-notes="D3,F3,A3" data-key="d">Dm</button>
+        <button class="chord-btn" data-notes="E3,G3,B3" data-key="e">Em</button>
+      </div>
+      <p class="hint">Click a chord, or use your keyboard: C A F G D E</p>
+    </section>
+
+    <section class="section controls-section">
+      <div id="volume-control">
+        <label for="volume-slider">🔊 Volume</label>
+        <input type="range" id="volume-slider" min="-40" max="0" value="-8" step="1" />
+      </div>
+    </section>
+
+  </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
   <script src="script.js"></script>
+</body>
 </body>
 </html>

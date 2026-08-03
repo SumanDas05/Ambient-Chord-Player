@@ -1,19 +1,154 @@
 /* ===================================================
-   Base page styling
+   CSS variables — our color palette, defined once and
+   reused everywhere via var(--name)
    =================================================== */
 
+:root {
+  --bg-dark: #0f0c29;
+  --accent-purple: #a78bfa;
+  --accent-pink: #f472b6;
+  --accent-blue: #60a5fa;
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --text-light: #f3f4f6;
+  --text-muted: #cbd5e1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* padding/border count INSIDE an element's width */
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #1a1a2e;
-  color: white;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: var(--text-light);
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 15px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ===================================================
+   Floating background blobs (decorative glow shapes)
+   =================================================== */
+
+.background-blobs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  animation: float 12s ease-in-out infinite;
+}
+
+.blob-1 {
+  width: 350px;
+  height: 350px;
+  background: var(--accent-purple);
+  top: 10%;
+  left: 10%;
+}
+
+.blob-2 {
+  width: 300px;
+  height: 300px;
+  background: var(--accent-pink);
+  bottom: 15%;
+  right: 10%;
+  animation-delay: 3s;
+}
+
+.blob-3 {
+  width: 250px;
+  height: 250px;
+  background: var(--accent-blue);
+  top: 50%;
+  left: 50%;
+  animation-delay: 6s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, -40px); }
+}
+
+/* ===================================================
+   Main glass panel
+   =================================================== */
+
+.glass-panel {
+  width: 100%;
+  max-width: 600px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px); /* Safari support */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 40px 30px;
+  animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+header {
   text-align: center;
-  padding: 50px;
+  margin-bottom: 35px;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* ===================================================
+   Sections
+   =================================================== */
+
+.section {
+  margin-bottom: 30px;
+}
+
+.section h2 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  text-align: center;
 }
 
 .hint {
+  text-align: center;
   font-size: 0.8rem;
-  color: #cbd5e1;
-  margin-top: 8px;
+  color: var(--text-muted);
+  margin-top: 12px;
   opacity: 0.7;
 }
 
@@ -26,89 +161,115 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  margin-top: 20px;
 }
 
 .instrument-btn {
   padding: 10px 18px;
-  font-size: 0.95rem;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  font-size: 0.9rem;
+  border: 1px solid var(--glass-border);
   border-radius: 20px;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: var(--glass-bg);
+  color: var(--text-light);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .instrument-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
 }
 
 .instrument-btn.active {
-  background-color: white;
-  color: #1a1a2e;
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
+  border-color: transparent;
   font-weight: bold;
+  color: white;
+  box-shadow: 0 4px 15px rgba(167, 139, 250, 0.4);
 }
 
 /* ===================================================
-   Chord button container
+   Chord buttons
    =================================================== */
 
 #chord-buttons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
-  margin-top: 30px;
+  gap: 14px;
 }
 
-/* ===================================================
-   Chord button base style (default / not playing)
-   =================================================== */
-
 .chord-btn {
-  padding: 20px 30px;
-  font-size: 1.2rem;
+  width: 70px;
+  height: 70px;
+  font-size: 1.1rem;
   font-weight: bold;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  background: var(--glass-bg);
+  color: var(--text-light);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .chord-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   transform: scale(1.05);
 }
 
-/* ===================================================
-   Active (currently playing) chord button
-   =================================================== */
-
 .chord-btn.active {
-  background-color: black;
-  border-color: white;
-  color: white;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  border-color: transparent;
   transform: scale(1.08);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 25px rgba(96, 165, 250, 0.6);
 }
 
 /* ===================================================
-   Volume control (left-aligned)
+   Controls (Volume — left-aligned, no Stop All)
    =================================================== */
+
+.controls-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* left-aligned, per your last request */
+  gap: 18px;
+}
 
 #volume-control {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 30px;
-  justify-content: flex-start; /* aligns to the left instead of centered */
-  max-width: 300px;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
 #volume-slider {
-  width: 180px;
+  width: 160px;
   cursor: pointer;
+  accent-color: var(--accent-purple); /* colors the slider fill/thumb */
+}
+
+/* ===================================================
+   Responsive adjustments for mobile screens
+   =================================================== */
+
+@media (max-width: 480px) {
+  .glass-panel {
+    padding: 28px 18px;
+    border-radius: 18px;
+  }
+
+  header h1 {
+    font-size: 1.4rem;
+  }
+
+  .chord-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 1rem;
+  }
+
+  .instrument-btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
 }
