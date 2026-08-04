@@ -271,4 +271,37 @@ header h1 {
   .instrument-btn {
     padding: 8px 14px;
     font-size: 0.8rem;
-  }}
+  }
+}
+#transpose-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+#transpose-control button {
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  background: var(--glass-bg);
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#transpose-control button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.1);
+}
+
+#transpose-display {
+  font-size: 1rem;
+  font-weight: bold;
+  min-width: 70px;
+  text-align: center;
+  color: var(--text-light);
+}

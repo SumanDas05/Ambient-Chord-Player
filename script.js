@@ -77,27 +77,79 @@ instrumentButtons.forEach((button) => {
 });
 
 // ---------------------------------------------------
-// 3. Chord toggle logic (only ONE chord plays at a time)
+// 3. Transpose — shifts ALL chords up/down by semitones
+// ---------------------------------------------------
+
+let transposeAmount = 0;
+
+const transposeDisplay = document.getElementById("transpose-display");
+const transposeUpButton = document.getElementById("transpose-up");
+const transposeDownButton = document.getElementById("transpose-down");
+
+// Takes an array of note names (e.g. ["C4","E4","G4"]) and returns a NEW
+// array with each note shifted by transposeAmount semitones.
+function getTransposedNotes(notes) {
+  return notes.map((note) => {
+    return Tone.Frequency(note).transpose(transposeAmount).toNote();
+  });
+}
+
+function updateTransposeDisplay() {
+  const sign = transposeAmount > 0 ? "+" : "";
+  transposeDisplay.textContent = "Key: " + sign + transposeAmount;
+}
+
+transposeUpButton.addEventListener("click", () => {
+  transposeAmount++;
+  updateTransposeDisplay();
+  console.log("Transpose set to: " + transposeAmount);
+});
+
+transposeDownButton.addEventListener("click", () => {
+  transposeAmount--;
+  updateTransposeDisplay();
+  console.log("Transpose set to: " + transposeAmount);
+});
+
+transposeDownButton.addEventListener("click", () => {
+  transposeAmount--;
+  updateTransposeDisplay();
+  retriggerCurrentChordIfPlaying();
+  console.log("Transpose set to: " + transposeAmount);
+});
+
+// ---------------------------------------------------
+// 4. Chord toggle logic (only ONE chord plays at a time)
 // ---------------------------------------------------
 
 const chordButtons = document.querySelectorAll(".chord-btn");
 let currentlyPlayingButton = null;
 
 function stopChord(button) {
-  const notes = button.dataset.notes.split(",");
+  const originalNotes = button.dataset.notes.split(",");
+  const notes = getTransposedNotes(originalNotes); // must match what was started
   synth.triggerRelease(notes);
   button.classList.remove("active");
   console.log(button.textContent + " chord stopped.");
 }
 
 function startChord(button) {
-  const notes = button.dataset.notes.split(",");
+  const originalNotes = button.dataset.notes.split(",");
+  const notes = getTransposedNotes(originalNotes); // apply current transpose
   synth.triggerAttack(notes);
   button.classList.add("active");
   currentlyPlayingButton = button;
-  console.log(button.textContent + " chord started.");
+  console.log(button.textContent + " chord started (transposed: " + notes.join(", ") + ")");
 }
-
+function startChord(button) {
+  const originalNotes = button.dataset.notes.split(",");
+  const notes = getTransposedNotes(originalNotes);
+  synth.triggerAttack(notes);
+  button.classList.add("active");
+  currentlyPlayingButton = button;
+  currentlyPlayingNotes = notes; // remember exactly what's now sounding
+  console.log(button.textContent + " chord started (transposed: " + notes.join(", ") + ")");
+}
 function toggleChord(button) {
   Tone.start();
 
@@ -119,7 +171,7 @@ chordButtons.forEach((button) => {
 });
 
 // ---------------------------------------------------
-// 4. Keyboard support (chords + Spacebar instrument cycling)
+// 5. Keyboard support (chords + Spacebar instrument cycling)
 // ---------------------------------------------------
 
 const keysPhysicallyDown = new Set();
@@ -149,7 +201,7 @@ window.addEventListener("keyup", (event) => {
 });
 
 // ---------------------------------------------------
-// 5. Volume slider
+// 6. Volume slider
 // ---------------------------------------------------
 
 const volumeSlider = document.getElementById("volume-slider");
