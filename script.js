@@ -99,25 +99,6 @@ function updateTransposeDisplay() {
   transposeDisplay.textContent = "Key: " + sign + transposeAmount;
 }
 
-transposeUpButton.addEventListener("click", () => {
-  transposeAmount++;
-  updateTransposeDisplay();
-  console.log("Transpose set to: " + transposeAmount);
-});
-
-transposeDownButton.addEventListener("click", () => {
-  transposeAmount--;
-  updateTransposeDisplay();
-  console.log("Transpose set to: " + transposeAmount);
-});
-
-transposeDownButton.addEventListener("click", () => {
-  transposeAmount--;
-  updateTransposeDisplay();
-  retriggerCurrentChordIfPlaying();
-  console.log("Transpose set to: " + transposeAmount);
-});
-
 // ---------------------------------------------------
 // 4. Chord toggle logic (only ONE chord plays at a time)
 // ---------------------------------------------------
@@ -125,31 +106,27 @@ transposeDownButton.addEventListener("click", () => {
 const chordButtons = document.querySelectorAll(".chord-btn");
 let currentlyPlayingButton = null;
 
+// Remembers the EXACT transposed notes currently sounding, so we can 
+// reliably release/update them later — even after transpose changes.
+let currentlyPlayingNotes = null;
+
 function stopChord(button) {
-  const originalNotes = button.dataset.notes.split(",");
-  const notes = getTransposedNotes(originalNotes); // must match what was started
-  synth.triggerRelease(notes);
+  synth.triggerRelease(currentlyPlayingNotes);
   button.classList.remove("active");
   console.log(button.textContent + " chord stopped.");
+  currentlyPlayingNotes = null;
 }
 
-function startChord(button) {
-  const originalNotes = button.dataset.notes.split(",");
-  const notes = getTransposedNotes(originalNotes); // apply current transpose
-  synth.triggerAttack(notes);
-  button.classList.add("active");
-  currentlyPlayingButton = button;
-  console.log(button.textContent + " chord started (transposed: " + notes.join(", ") + ")");
-}
 function startChord(button) {
   const originalNotes = button.dataset.notes.split(",");
   const notes = getTransposedNotes(originalNotes);
   synth.triggerAttack(notes);
   button.classList.add("active");
   currentlyPlayingButton = button;
-  currentlyPlayingNotes = notes; // remember exactly what's now sounding
+  currentlyPlayingNotes = notes;
   console.log(button.textContent + " chord started (transposed: " + notes.join(", ") + ")");
 }
+
 function toggleChord(button) {
   Tone.start();
 
@@ -171,7 +148,39 @@ chordButtons.forEach((button) => {
 });
 
 // ---------------------------------------------------
-// 5. Keyboard support (chords + Spacebar instrument cycling)
+// 5. Transpose buttons — also live-updates a playing chord
+// ---------------------------------------------------
+
+// Re-pitches the currently playing chord (if any) to match the new 
+// transpose amount, without needing to stop and manually restart it.
+function retriggerCurrentChordIfPlaying() {
+  if (currentlyPlayingButton === null) return; // nothing playing, nothing to do
+
+  synth.triggerRelease(currentlyPlayingNotes);
+
+  const originalNotes = currentlyPlayingButton.dataset.notes.split(",");
+  const newNotes = getTransposedNotes(originalNotes);
+  synth.triggerAttack(newNotes);
+
+  currentlyPlayingNotes = newNotes;
+}
+
+transposeUpButton.addEventListener("click", () => {
+  transposeAmount++;
+  updateTransposeDisplay();
+  retriggerCurrentChordIfPlaying();
+  console.log("Transpose set to: " + transposeAmount);
+});
+
+transposeDownButton.addEventListener("click", () => {
+  transposeAmount--;
+  updateTransposeDisplay();
+  retriggerCurrentChordIfPlaying();
+  console.log("Transpose set to: " + transposeAmount);
+});
+
+// ---------------------------------------------------
+// 6. Keyboard support (chords + Spacebar instrument cycling)
 // ---------------------------------------------------
 
 const keysPhysicallyDown = new Set();
@@ -201,7 +210,7 @@ window.addEventListener("keyup", (event) => {
 });
 
 // ---------------------------------------------------
-// 6. Volume slider
+// 7. Volume slider
 // ---------------------------------------------------
 
 const volumeSlider = document.getElementById("volume-slider");
