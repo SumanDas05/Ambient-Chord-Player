@@ -305,3 +305,31 @@ header h1 {
   text-align: center;
   color: var(--text-light);
 }
+#mic-toggle-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  background: var(--glass-bg);
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#mic-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+#mic-toggle-btn.active {
+  background: linear-gradient(90deg, var(--accent-pink), var(--accent-blue));
+  border-color: transparent;
+  box-shadow: 0 0 20px rgba(244, 114, 182, 0.5);
+}
+
+#pitch-display {
+  margin-top: 10px;
+  font-weight: bold;
+}
