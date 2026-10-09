@@ -1,5 +1,7 @@
 // ===================================================
 // AMBIENT CHORD PLAYER — script.js
+// Requires effects.js to be loaded BEFORE this file
+// (it provides effectsBus and masterVolume).
 // ===================================================
 
 // ---------------------------------------------------
@@ -11,19 +13,15 @@ const synth = new Tone.PolySynth(Tone.Synth, {
   envelope: { attack: 1.5, decay: 0.3, sustain: 0.9, release: 3 }
 });
 
-synth.volume.value = -8;
-
+// Low-pass filter: cuts harsh high frequencies for a warmer tone
 const filter = new Tone.Filter({
   frequency: 800,
   type: "lowpass"
 });
 
-const reverb = new Tone.Reverb({
-  decay: 4,
-  wet: 0.4
-}).toDestination();
-
-synth.chain(filter, reverb);
+// The reverb and volume now live in effects.js. We just connect the synth
+// into the effects chain: synth → filter → effectsBus → (effects) → speakers
+synth.chain(filter, effectsBus);
 
 // ---------------------------------------------------
 // 2. Instrument presets ("tones") — like voices on a keyboard
@@ -86,6 +84,8 @@ const transposeDisplay = document.getElementById("transpose-display");
 const transposeUpButton = document.getElementById("transpose-up");
 const transposeDownButton = document.getElementById("transpose-down");
 
+// Takes an array of note names (e.g. ["C4","E4","G4"]) and returns a NEW
+// array with each note shifted by transposeAmount semitones.
 function getTransposedNotes(notes) {
   return notes.map((note) => {
     return Tone.Frequency(note).transpose(transposeAmount).toNote();
@@ -97,6 +97,8 @@ function updateTransposeDisplay() {
   transposeDisplay.textContent = "Key: " + sign + transposeAmount;
 }
 
+// Re-pitches the currently playing chord (if any) to the new transpose
+// amount, live, without needing to stop and restart it.
 function retriggerCurrentChordIfPlaying() {
   if (currentlyPlayingButton === null) return;
 
@@ -129,6 +131,9 @@ transposeDownButton.addEventListener("click", () => {
 
 const chordButtons = document.querySelectorAll(".chord-btn");
 let currentlyPlayingButton = null;
+
+// The EXACT transposed notes currently sounding, so releases always match
+// what was actually triggered, even if transpose changed in between.
 let currentlyPlayingNotes = null;
 
 function stopChord(button) {
@@ -199,13 +204,13 @@ window.addEventListener("keyup", (event) => {
 });
 
 // ---------------------------------------------------
-// 6. Volume slider
+// 6. Master volume slider
 // ---------------------------------------------------
 
 const volumeSlider = document.getElementById("volume-slider");
 
 volumeSlider.addEventListener("input", () => {
   const newVolume = Number(volumeSlider.value);
-  synth.volume.value = newVolume;
-  console.log("Volume set to: " + newVolume + " dB");
+  masterVolume.volume.value = newVolume; // master volume lives in effects.js
+  console.log("Master volume set to: " + newVolume + " dB");
 });

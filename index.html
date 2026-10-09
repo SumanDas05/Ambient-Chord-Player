@@ -5,14 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ambient Chord Player</title>
 
-  <!-- Favicon (browser tab icon) using an inline emoji SVG — no image file needed -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎧</text></svg>" />
 
-  <!-- SEO: describes your page for search engines -->
   <meta name="description" content="A free, relaxing ambient chord player for singers. Play soft sustained chords, switch instruments, and transpose to find your perfect key — right in your browser." />
   <meta name="keywords" content="chord player, ambient music, singing practice, vocal warm up, online piano, Tone.js" />
-
-  <!-- Controls how your link looks when shared on social media/chat apps -->
   <meta property="og:title" content="Ambient Chord Player" />
   <meta property="og:description" content="Play soft, sustained chords to relax and sing along — right in your browser." />
   <meta property="og:type" content="website" />
@@ -21,7 +17,6 @@
 </head>
 <body>
 
-  <!-- Purely decorative floating blurred shapes behind the glass panel -->
   <div class="background-blobs">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
@@ -69,16 +64,99 @@
       <p class="hint">Shift all chords up or down to match your vocal range</p>
     </section>
 
+    <section class="section">
+      <h2>Effects Studio</h2>
+      <div id="effects-panel">
+
+        <!-- REVERB -->
+        <div class="effect-card" id="reverb-card">
+          <div class="effect-header">
+            <span>Reverb</span>
+            <label class="switch">
+              <input type="checkbox" id="reverb-toggle" aria-label="Enable reverb" />
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+          <div class="effect-row">
+            <label for="reverb-amount">Amount</label>
+            <input type="range" id="reverb-amount" min="0" max="100" value="40" />
+            <output id="reverb-amount-value">40%</output>
+          </div>
+          <div class="effect-row">
+            <label for="reverb-decay">Decay</label>
+            <input type="range" id="reverb-decay" min="1" max="10" step="0.5" value="4" />
+            <output id="reverb-decay-value">4 s</output>
+          </div>
+        </div>
+
+        <!-- DELAY -->
+        <div class="effect-card" id="delay-card">
+          <div class="effect-header">
+            <span>Delay</span>
+            <label class="switch">
+              <input type="checkbox" id="delay-toggle" aria-label="Enable delay" />
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+          <div class="effect-row">
+            <label for="delay-amount">Amount</label>
+            <input type="range" id="delay-amount" min="0" max="100" value="30" />
+            <output id="delay-amount-value">30%</output>
+          </div>
+          <div class="effect-row">
+            <label for="delay-time">Time</label>
+            <input type="range" id="delay-time" min="0.05" max="1" step="0.05" value="0.3" />
+            <output id="delay-time-value">0.30 s</output>
+          </div>
+          <div class="effect-row">
+            <label for="delay-feedback">Feedback</label>
+            <input type="range" id="delay-feedback" min="0" max="80" value="30" />
+            <output id="delay-feedback-value">30%</output>
+          </div>
+        </div>
+
+        <!-- CHORUS -->
+        <div class="effect-card" id="chorus-card">
+          <div class="effect-header">
+            <span>Chorus</span>
+            <label class="switch">
+              <input type="checkbox" id="chorus-toggle" aria-label="Enable chorus" />
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+          <div class="effect-row">
+            <label for="chorus-amount">Amount</label>
+            <input type="range" id="chorus-amount" min="0" max="100" value="50" />
+            <output id="chorus-amount-value">50%</output>
+          </div>
+          <div class="effect-row">
+            <label for="chorus-speed">Speed</label>
+            <input type="range" id="chorus-speed" min="0.5" max="8" step="0.5" value="1.5" />
+            <output id="chorus-speed-value">1.5 Hz</output>
+          </div>
+          <div class="effect-row">
+            <label for="chorus-depth">Depth</label>
+            <input type="range" id="chorus-depth" min="0" max="100" value="70" />
+            <output id="chorus-depth-value">70%</output>
+          </div>
+        </div>
+
+      </div>
+      <p class="hint">Toggle each effect on or off and shape it with the sliders</p>
+    </section>
+
     <section class="section controls-section">
       <div id="volume-control">
-        <label for="volume-slider">🔊 Volume</label>
+        <label for="volume-slider">🔊 Master Volume</label>
         <input type="range" id="volume-slider" min="-40" max="0" value="-8" step="1" />
       </div>
     </section>
 
   </main>
 
+  <!-- ORDER MATTERS: Tone.js first, then effects.js, then script.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <script src="effects.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
